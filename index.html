@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狐戒</title>
+    <style>
+        /* 核心变量与基础重置 */
+        :root {
+            --primary: #6C5CE7;
+            --primary-soft: #a29bfe;
+            --secondary: #00CEC9;
+            --accent: #FF8C42;
+            --dark: #2D3436;
+            --light: #F7F9FC;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 渐变背景 Hero */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* 导航栏 */
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 12px 0;
+        }
+
+        header.scrolled .logo, header.scrolled .nav-links a { color: var(--dark); }
+        header.scrolled .cta-button { border-color: var(--primary); color: var(--primary); }
+
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 26px; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo span { background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-size: 18px; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--secondary); }
+
+        /* Hero 区域 */
+        .hero { padding: 180px 0 120px; text-align: center; }
+        .slogan { font-size: 22px; color: var(--secondary); font-weight: 600; margin-bottom: 15px; letter-spacing: 4px; }
+        .hero h1 { font-size: clamp(32px, 5vw, 60px); margin-bottom: 25px; line-height: 1.2; }
+        .hero p { font-size: 20px; opacity: 0.9; max-width: 700px; margin: 0 auto 40px; }
+
+        /* 按钮样式 */
+        .btn { padding: 14px 36px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: 0.3s; display: inline-block; }
+        .btn-primary { background: var(--white); color: var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .btn-outline { border: 2px solid var(--white); color: var(--white); margin-left: 15px; }
+
+        /* 通用卡片网格 */
+        .section-padding { padding: 100px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 36px; margin-bottom: 15px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--white); padding: 40px; border-radius: 20px; transition: 0.3s; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-10px); box-shadow: var(--shadow); border-color: var(--primary-soft); }
+        
+        /* 定价卡片特化 */
+        .price-card { text-align: center; position: relative; overflow: hidden; }
+        .price-tag { font-size: 28px; color: var(--primary); font-weight: 800; margin: 20px 0; }
+        .price-tag span { font-size: 14px; color: #999; font-weight: 400; }
+
+        /* 工作原理步骤 */
+        .step-list { max-width: 800px; margin: 0 auto; }
+        .step-item { display: flex; gap: 25px; margin-bottom: 40px; align-items: flex-start; }
+        .step-num { width: 44px; height: 44px; background: var(--primary); color: white; border-radius: 50%; display: flex; 
+                    align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
+
+        /* 页脚 */
+        footer { background: var(--dark); color: #bdc3c7; padding: 80px 0 30px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-logo { color: white; font-size: 24px; margin-bottom: 20px; display: block; }
+        .copyright { border-top: 1px solid #444; padding-top: 30px; text-align: center; font-size: 14px; }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 32px; }
+            .btn-outline { margin-left: 0; margin-top: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container header-content">
+            <a href="#" class="logo">狐戒</a>
+            <nav class="nav-links">
+                <a href="#features">功能</a>
+                <a href="#how-it-works">原理</a>
+                <a href="#pricing">价格</a>
+            </nav>
+            <a href="https://hj.shunx.top/register" class="btn btn-primary cta-button" style="padding: 8px 20px;">快速开始</a>
+        </div>
+    </header>
+
+    <section class="gradient-bg hero">
+        <div class="container">
+            <div class="slogan">FOX GUARD AI</div>
+            <h1>狐戒之下，虚妄皆去</h1>
+            <div class="hero-btns">
+                <a href="#pricing" class="btn btn-primary">查看定价</a>
+                <a href="#" class="btn btn-outline">技术文档</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="section-padding" id="how-it-works" style="background: #fff;">
+        <div class="container">
+            <div class="section-title">
+                <h2>智能审核流</h2>
+                <p>三层过滤机制，兼顾效率与精准度</p>
+            </div>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-num">01</div>
+                    <div>
+                        <h3>规则引擎初筛 (Cost ≈ 0)</h3>
+                        <p>通过动态黑话库，毫秒级拦截博彩、引流等高频违规词汇</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">02</div>
+                    <div>
+                        <h3>AI 模型精审</h3>
+                        <p>由 Qwen3Guard-0.6B 与 8B 模型协同作战，深度语义理解，识别隐晦违规</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">03</div>
+                    <div>
+                        <h3>多社区审核支持</h3>
+                        <p>支持问文本，图片，ai审核</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>产品定价</h2>
+                <p>透明的按量付费模式，无任何隐藏费用</p>
+            </div>
+            <div class="grid">
+                <div class="card price-card">
+                    <h3>文本内容审核</h3>
+                    <div class="price-tag">0.4 <span>元/千条</span></div>
+                    <p>支持多语言，精准识别色情、暴力及辱骂。适合社交评论、弹幕等</p>
+                </div>
+                <div class="card price-card">
+                    <h3>图片内容审核</h3>
+                    <div class="price-tag">0.5 <span>元/千张</span></div>
+                    <p>检测暴恐、政治敏感及不良图像，保护社区视觉环境安全</p>
+                </div>
+                <div class="card price-card">
+                    <h3>AI 生成识别</h3>
+                    <div class="price-tag">0.5 <span>元/千张</span></div>
+                    <p>利用深度学习区分 AIGC 与原创图片，保护创作者权益</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding gradient-bg" style="text-align: center;">
+        <div class="container">
+            <h2>准备好守护您的社区了吗？</h2>
+            <p style="margin: 20px 0 40px;">注册即享免费试用额度，5行代码快速接入 API</p>
+            <a href="https://hj.shunx.top/register" class="btn btn-primary">立即免费注册</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <strong class="footer-logo">狐戒 FoxGuard</strong>
+                    <p>致力于用 AI 技术构建安全、健康的互联网生态环境</p>
+                </div>
+                <div>
+                    <h4>产品</h4>
+                    <p style="margin-top:10px">文本审核</p>
+                    <p>图像识别</p>
+                    <p>风险预警</p>
+                </div>
+                <div>
+                    <h4>支持</h4>
+                    <p style="margin-top:10px">文档中心</p>
+                    <p>API参考</p>
+                    <p>帮助中心</p>
+                </div>
+                <div>
+                    <h4>联系</h4>
+                    <p style="margin-top:10px">s@shunx.top</p>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2026 狐戒 保留所有权利
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+</body>
+</html>
